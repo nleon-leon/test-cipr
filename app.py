@@ -25,6 +25,22 @@ DICCIONARIO_CARRERAS = {
     "Defensa y Seguridad": "Carreras Oficiales/Suboficiales en Fuerzas Armadas (Ejército, Armada, Fuerza Aérea), Carabineros de Chile y PDI."
 }
 
+# --- CONTROL DE CRÉDITOS Y PROPIEDAD INTELECTUAL ---
+with st.sidebar:
+    st.markdown("### 🏛️ Propiedad Intelectual")
+    st.markdown(
+        """
+        <div style="background-color: #1e2630; padding: 14px; border-radius: 6px; border-left: 4px solid #3b82f6; margin-bottom: 15px;">
+            <p style="color: #94a3b8; font-size: 11px; margin: 0; font-weight: bold;">CREADOR Y DESARROLLADOR</p>
+            <p style="color: white; font-size: 15px; margin: 4px 0 0 0; font-weight: bold;">Nelson León Carrasco</p>
+            <p style="color: #cbd5e1; font-size: 12px; margin: 2px 0 0 0;">Plataforma de Adaptación Digital</p>
+        </div>
+        """, unsafe_allow_html=True
+    )
+    st.markdown("<small> *Instrumento de base teórica: Cuestionario de Intereses Profesionales Revisado (CIP-R), Fogliatto et al.*</small>", unsafe_allow_html=True)
+    st.markdown("---")
+    st.caption("© 2026 Todos los derechos reservados. Queda prohibida la comercialización, alteración o distribución secundaria de este software con fines de lucro sin la autorización expresa del autor.")
+
 @st.cache_data
 def cargar_banco_preguntas():
     try:
@@ -69,7 +85,7 @@ def generar_html_reporte(nombre, apellido, rut, top_df):
     <body>
         <div class='header'>
             <h2>RESULTADOS DIAGNÓSTICO VOCACIONAL CIP-R</h2>
-            <p>Programa PACE</p>
+            <p>Plataforma de Orientación Educativa</p>
         </div>
         <div class='info'>
             <p style='margin: 4px 0;'><strong>Estudiante:</strong> {nombre} {apellido}</p>
@@ -89,7 +105,7 @@ def generar_html_reporte(nombre, apellido, rut, top_df):
             </tbody>
         </table>
         <div class='footer'>
-            <p>Reporte generado automáticamente por la plataforma de orientación vocacional.</p>
+            <p>Reporte de Resultados - Adaptación y Desarrollo Digital por Nelson León Carrasco.</p>
         </div>
     </body>
     </html>
@@ -181,7 +197,6 @@ if df_preguntas is not None:
         
         top_3 = st.session_state.df_resultados.sort_values(by="Puntaje", ascending=False).head(3)
         
-        # Tarjetas interactivas con la descripción de carreras añadidas abajo
         for i, row in enumerate(top_3.itertuples(), 1):
             carreras_afines = DICCIONARIO_CARRERAS.get(row._1, "Ocupaciones asociadas al desarrollo del área.")
             st.markdown(f"""
@@ -197,7 +212,6 @@ if df_preguntas is not None:
             
         st.write("---")
         
-        # El reporte HTML descargable ahora también incluye el desglose de carreras
         html_reporte = generar_html_reporte(
             st.session_state.nombres_alumno, 
             st.session_state.apellido_alumno, 
@@ -213,7 +227,7 @@ if df_preguntas is not None:
             use_container_width=True
         )
         
-        st.caption("💡 Consejo: Al abrir el archivo descargado, puedes presionar Ctrl+P en tu teclado y seleccionar 'Guardar como PDF' para guardarlo de manera permanente con el desglose completo.")
+        st.caption("💡 Consejo: Al abrir el archivo descargado, puedes presionar Ctrl+P en tu teclado y seleccionar 'Guardar como PDF'.")
         
         if st.button("🔄 Volver a realizar el Test", use_container_width=True):
             st.session_state.clear()
